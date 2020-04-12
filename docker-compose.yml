@@ -1,0 +1,8 @@
+version: '3'
+services:
+  fsharp_jlab_service:
+    build: .
+    ports:
+      - "8888:8888"
+    volumes:
+      - ~/projects:/home/jovyan/Notebooks

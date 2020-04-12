@@ -1,1 +1,3 @@
-# stochastic
+# Stochastic
+
+Using F# notebook
