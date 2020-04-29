@@ -28,7 +28,7 @@ RUN apt-get install -y --no-install-recommends \
 
 RUN rm -rf /var/lib/apt/lists/*
 
-####### Install .NET Core SDK #######
+# Install .NET Core SDK
 
 # When updating the SDK version, the sha512 value a few lines down must also be updated.
 ENV DOTNET_SDK_VERSION 3.1.200
@@ -57,17 +57,14 @@ ENV DOTNET_RUNNING_IN_CONTAINER=true \
 # # Copy package sources
 # RUN cp -r interactive/NuGet.config ${HOME}/nuget.config
 
-####### END Install .NET Core SDK #######
-
 ####### Install R statistics #######
 # OS_IDENTIFIER from: https://github.com/rstudio/r-builds
 ENV OS_IDENTIFIER ubuntu-1804
 ENV R_VERSION 3.6.3
 # R install from:
-# https://github.com/rstudio/r-docker/blob/master/3.6/bionic/Dockerfile
-RUN wget https://cdn.rstudio.com/r/${OS_IDENTIFIER}/pkgs/r-${R_VERSION}_1_amd64.deb
-
-RUN apt-get update -qq && \
+# https://github.com/rstudio/r-docker/blob/master/Dockerfile-ubuntu.template
+RUN wget https://cdn.rstudio.com/r/${OS_IDENTIFIER}/pkgs/r-${R_VERSION}_1_amd64.deb && \
+    apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive apt-get install -f -y ./r-${R_VERSION}_1_amd64.deb && \
     ln -s /opt/R/${R_VERSION}/bin/R /usr/bin/R && \
     ln -s /opt/R/${R_VERSION}/bin/Rscript /usr/bin/Rscript && \
@@ -81,9 +78,6 @@ RUN apt-get update -qq && apt-get  install -f -y r-cran-devtools
 # RUN R -e "install.packages('devtools', repos = 'http://cran.us.r-project.org')"
 RUN R -e "devtools::install_github('IRkernel/IRkernel')"
 RUN R -e "IRkernel::installspec(user = FALSE)"
-
-# change ownership of R install directory, this allow to install packages
-RUN chown -R ${NB_UID} /usr/local/lib/R
 
 ####### END Install R statistics #######
 
@@ -107,14 +101,6 @@ ENV DOTNET_TRY_CLI_TELEMETRY_OPTOUT=false
 
 # Set root to Notebooks
 WORKDIR ${HOME}/Notebooks/
-
-# Install python packages
-RUN jupyter labextension install jupyterlab-plotly
-RUN conda install --quiet --yes \
-    'plotly'
-
-# Install R statistics packages
-RUN R -e "install.packages(c('dplyr','ggplot2'), repos = 'http://cran.us.r-project.org')"
 
 # There is no env variable to switch of the token, have use start.sh
 ENTRYPOINT ["start.sh", "jupyter", "lab", "--LabApp.token=''"]
