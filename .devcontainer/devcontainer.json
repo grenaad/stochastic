@@ -1,5 +1,5 @@
 {
-    "name": "Python 3",
+    "name": "F# notebook container",
     "context": "..",
     "dockerComposeFile": ["../docker-compose.yml"],
     "postCreateCommand": "cat ~/.ssh/id_rsa.pub",
@@ -7,7 +7,8 @@
     "workspaceFolder": "/home/jovyan",
     "extensions": [
       "ms-python.python",
-      "ms-azuretools.vscode-docker"
+      "ms-azuretools.vscode-docker",
+      "ms-dotnettools.dotnet-interactive-vscode"
     ],
     "settings": {
       "python.pythonPath": "/opt/conda/bin/python",
