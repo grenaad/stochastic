@@ -1,3 +1,0 @@
-# Stochastic
-
-Using F# notebook

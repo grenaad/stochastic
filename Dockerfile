@@ -6,7 +6,6 @@ FROM jupyter/r-notebook:latest
 WORKDIR ${HOME}
 
 ####### Install .NET Core SDK #######
-# See docker image dotnet-docker/5.0
 # https://github.com/dotnet/dotnet-docker/blob/master/5.0/sdk/focal/amd64/Dockerfile
 # Have to use sdk version 3.1.200 for now, the .NET kernel only works with it,
 # otherwise cmd "dotnet interactive jupyter install", will fail
@@ -47,7 +46,15 @@ USER $NB_UID
 ENV PATH="${PATH}:${HOME}/.dotnet/tools"
 
 # Install .NET Interactive
-RUN dotnet tool install --global Microsoft.dotnet-interactive
+# RUN dotnet tool install --global Microsoft.dotnet-interactive
+# Install lastest build from master branch of Microsoft.DotNet.Interactive from myget
+RUN dotnet tool install --tool-path $DOTNET_ROOT/dotnet-interactive Microsoft.dotnet-interactive --add-source "https://dotnet.myget.org/F/dotnet-try/api/v3/index.json"
+RUN dotnet tool install --tool-path $DOTNET_ROOT/dotnet-try dotnet-try --add-source "https://dotnet.myget.org/F/dotnet-try/api/v3/index.json"
+    
+USER root
+RUN ln -s $DOTNET_ROOT/dotnet-interactive/dotnet-interactive /usr/bin/dotnet-interactive
+RUN ln -s $DOTNET_ROOT/dotnet-try/dotnet-try /usr/bin/dotnet-try
+USER $NB_UID
 
 # Install the .NET kernel
 RUN dotnet interactive jupyter install
@@ -59,4 +66,5 @@ WORKDIR ${HOME}/Notebooks/
 RUN R -e "install.packages(c('dplyr','ggplot2'), repos = 'http://cran.us.r-project.org')"
 
 # There is no env variable to switch of the token, have use start.sh
-ENTRYPOINT ["start.sh", "jupyter", "lab", "--LabApp.token=''"]
+ENTRYPOINT ["start.sh", "jupyter", "lab", "--LabApp.token=''", "--ip=0.0.0.0", "--allow-root"]
+
