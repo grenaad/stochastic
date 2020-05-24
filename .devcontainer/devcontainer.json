@@ -4,11 +4,12 @@
     "dockerComposeFile": ["../docker-compose.yml"],
     "postCreateCommand": "cat ~/.ssh/id_rsa.pub",
     "service": "fsharp_jlab_service",
-    "workspaceFolder": "/home/jovyan",
+    "workspaceFolder": "/home/jovyan/Notebooks/stochastic/",
     "extensions": [
       "ms-python.python",
       "ms-azuretools.vscode-docker",
-      "ms-dotnettools.dotnet-interactive-vscode"
+      "ms-dotnettools.dotnet-interactive-vscode",
+      "ionide.ionide-fsharp"
     ],
     "settings": {
       "python.pythonPath": "/opt/conda/bin/python",

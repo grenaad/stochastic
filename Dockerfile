@@ -48,9 +48,9 @@ ENV PATH="${PATH}:${HOME}/.dotnet/tools"
 # Install .NET Interactive
 # RUN dotnet tool install --global Microsoft.dotnet-interactive
 # Install lastest build from master branch of Microsoft.DotNet.Interactive from myget
-RUN dotnet tool install --tool-path $DOTNET_ROOT/dotnet-interactive Microsoft.dotnet-interactive --add-source "https://dotnet.myget.org/F/dotnet-try/api/v3/index.json"
+RUN dotnet tool install --tool-path $DOTNET_ROOT/dotnet-interactive Microsoft.dotnet-interactive --version 1.0.127302 --add-source "https://dotnet.myget.org/F/dotnet-try/api/v3/index.json"
 RUN dotnet tool install --tool-path $DOTNET_ROOT/dotnet-try dotnet-try --add-source "https://dotnet.myget.org/F/dotnet-try/api/v3/index.json"
-    
+
 USER root
 RUN ln -s $DOTNET_ROOT/dotnet-interactive/dotnet-interactive /usr/bin/dotnet-interactive
 RUN ln -s $DOTNET_ROOT/dotnet-try/dotnet-try /usr/bin/dotnet-try
@@ -66,5 +66,6 @@ WORKDIR ${HOME}/Notebooks/
 RUN R -e "install.packages(c('dplyr','ggplot2'), repos = 'http://cran.us.r-project.org')"
 
 # There is no env variable to switch of the token, have use start.sh
-ENTRYPOINT ["start.sh", "jupyter", "lab", "--LabApp.token=''", "--ip=0.0.0.0", "--allow-root"]
-
+ENTRYPOINT ["start.sh", "jupyter", "lab", "--LabApp.token=''", "--ip='*'", "--allow-root", "--LabApp.password=''"]
+# CMD ["start-notebook.sh", "--ip='*'" ,"--NotebookApp.token=''", "--NotebookApp.disable_check_xsrfBool=True", "--NotebookApp.password=''"]
+# CMD ["jupyter", "notebook", "--no-browser","--NotebookApp.token='1'","--NotebookApp.password='1'", "--NotebookApp.disable_check_xsrfBool=True"]

@@ -1,3 +1,0 @@
-#!fsharp
-
-#r "nuget:Microsoft.Data.Analysis,0.2.0"
