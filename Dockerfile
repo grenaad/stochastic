@@ -67,5 +67,3 @@ RUN R -e "install.packages(c('dplyr','ggplot2'), repos = 'http://cran.us.r-proje
 
 # There is no env variable to switch of the token, have use start.sh
 ENTRYPOINT ["start.sh", "jupyter", "lab", "--LabApp.token=''", "--ip='*'", "--allow-root", "--LabApp.password=''"]
-# CMD ["start-notebook.sh", "--ip='*'" ,"--NotebookApp.token=''", "--NotebookApp.disable_check_xsrfBool=True", "--NotebookApp.password=''"]
-# CMD ["jupyter", "notebook", "--no-browser","--NotebookApp.token='1'","--NotebookApp.password='1'", "--NotebookApp.disable_check_xsrfBool=True"]
