@@ -15,7 +15,8 @@ type DataRow = {
     }
 
 let path = Path.Combine(__SOURCE_DIRECTORY__,"data.csv")
-let csv_data = CsvFile.Load(File.Open(path, FileMode.Open), separators = ",", quote = '"', hasHeaders= true)
+let stream = File.Open(path, FileMode.Open)
+let csv_data = CsvFile.Load(stream, separators = ",", quote = '"', hasHeaders= true)
 
 let data =
        csv_data.Rows
@@ -29,3 +30,4 @@ data
         |> Chart.Pie
         |> Chart.WithTitle "Dataset by Genre"
         |> Chart.WithLegend true
+stream.Close()
